@@ -1,5 +1,9 @@
 const express = require('express');
-const { CreateClient, RemoveClient } = require('../controllers/client');
+const {
+	CreateClient,
+	RemoveClient,
+	AuthenticateClient
+} = require('../controllers/client');
 
 const routes = express.Router();
 
@@ -7,8 +11,10 @@ const routes = express.Router();
 // 	res.send('teste');
 // });
 
+routes.post('/authClient', AuthenticateClient);
+
 routes.post('/newClient', CreateClient);
 
-routes.post('/newClient', RemoveClient);
+routes.post('/removeClient', RemoveClient);
 
 module.exports = routes;
