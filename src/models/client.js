@@ -1,23 +1,28 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 mongoose.set('useCreateIndex', true);
 
-const ClientModel = new mongoose.Schema(
+const ClientSchema = new mongoose.Schema(
 	{
 		excluded: {
 			type: Boolean,
 			default: false
 		},
 		login: {
+			lowercase: true,
 			type: String
 		},
 		email: {
+			lowercase: true,
 			type: String
 		},
 		password: {
-			type: String
+			type: String,
+			select: false
 		},
 		name: {
+			lowercase: true,
 			type: String
 		},
 		birth: {
@@ -29,35 +34,33 @@ const ClientModel = new mongoose.Schema(
 		cpf: {
 			type: String
 		},
-		telephone: [
-			{
-				ddd: {
-					type: String
-				},
-				number: {
-					type: String
-				}
-			}
-		],
+		telephone: {
+			ddd: Intl,
+			number: String
+		},
 		vehicle: [
 			{
+				createdAt: {
+					type: Date,
+					default: Date.now
+				},
 				excluded: {
 					type: Boolean,
 					default: false
 				},
-				available: {
+				avalible: {
 					type: Boolean,
-					default: true
+					default: false,
+					require: true
 				},
 				plate: {
+					lowercase: true,
 					type: String
 				},
 				name: {
+					lowercase: true,
 					type: String
 				}
-			},
-			{
-				timestamps: true
 			}
 		]
 	},
@@ -66,4 +69,12 @@ const ClientModel = new mongoose.Schema(
 	}
 );
 
-module.exports = mongoose.model('Client', ClientModel);
+ClientSchema.pre('save', async function(next) {
+	const hash = await bcrypt.hash(this.password, 1);
+
+	this.password = hash;
+
+	next();
+});
+
+module.exports = mongoose.model('Client', ClientSchema);

@@ -2,20 +2,10 @@ const Client = require('../models/client');
 
 module.exports = {
 	async CreateClient(req, res) {
-		const { login, email, password, name, birth, sex, cpf } = req.body;
-
-		const teste = await Client.create({
-			login,
-			email,
-			password,
-			name,
-			birth,
-			sex,
-			cpf
-		});
+		const response = await Client.create(req.body);
 
 		return res.json({
-			message: teste
+			message: response
 		});
 	},
 
