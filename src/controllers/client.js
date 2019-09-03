@@ -12,18 +12,18 @@ module.exports = {
 			}).select('+password');
 
 			if (!user) {
-				return res.status(400).send('Erro');
+				return res.status(400).send('Usuário não encontrado!');
 			}
 
 			if (!(await bcrypt.compare(password, user.password))) {
-				return res.status(400).send('teste');
+				return res.status(400).send('Senha incorreta!');
 			}
 
 			user.password = undefined;
 
 			return res.json(user);
 		} catch (error) {
-			return res.status(400).send('Erro');
+			return res.status(400).send('Usuário não encontrado!');
 		}
 	},
 
@@ -31,13 +31,15 @@ module.exports = {
 		const response = await Client.create(req.body);
 
 		return res.json({
-			error: response
+			message: response
 		});
 	},
 
 	async RemoveClient(req, res) {
 		const { name } = req.body;
 
-		return res.json({ message: name });
+		return res.json({
+			message: name
+		});
 	}
 };

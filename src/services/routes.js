@@ -5,16 +5,16 @@ const {
 	AuthenticateClient
 } = require('../controllers/client');
 
-const routes = express.Router();
+const { CreateParking } = require('../controllers/parking');
 
-// routes.get('/', (req, res) => {
-// 	res.send('teste');
-// });
+const routes = express.Router();
 
 routes.post('/authClient', AuthenticateClient);
 
 routes.post('/newClient', CreateClient);
 
 routes.post('/removeClient', RemoveClient);
+
+routes.post('/createParking', CreateParking);
 
 module.exports = routes;
