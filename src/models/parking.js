@@ -3,6 +3,109 @@ const bcrypt = require('bcryptjs');
 
 mongoose.set('useCreateIndex', true);
 
+const ParkingQualificationSchema = new mongoose.Schema(
+	{
+		value: {
+			type: Intl
+		},
+		description: {
+			lowercase: true,
+			type: String
+		},
+		client: {
+			login: {
+				lowercase: true,
+				type: String
+			},
+			email: {
+				lowercase: true,
+				type: String
+			}
+		}
+	},
+	{
+		timestamps: true
+	}
+);
+
+const ParkingSpaceSchema = new mongoose.Schema(
+	{
+		excluded: {
+			type: Boolean,
+			default: false
+		},
+		avalible: {
+			type: Boolean,
+			default: true
+		},
+		value: {
+			type: Number
+		},
+		name: {
+			lowercase: true,
+			type: String
+		},
+		description: {
+			accessibility: {
+				type: Boolean
+			},
+			covered: {
+				type: Boolean
+			},
+			vehicle_type: {
+				type: Boolean
+			},
+			services: {
+				type: Boolean
+			}
+		}
+	},
+	{
+		timestamps: true
+	}
+);
+
+const ParkingUserSchema = new mongoose.Schema(
+	{
+		excluded: {
+			type: Boolean,
+			default: false
+		},
+		login: {
+			lowercase: true,
+			type: String
+		},
+		email: {
+			lowercase: true,
+			type: String
+		},
+		password: {
+			type: String,
+			select: false
+		},
+		birth: {
+			type: Date
+		},
+		sex: {
+			lowercase: true,
+			type: String
+		},
+		cpf: {
+			type: String
+		},
+		name: {
+			lowercase: true,
+			type: String
+		},
+		accessLevel: {
+			type: Intl
+		}
+	},
+	{
+		timestamps: true
+	}
+);
+
 const ParkingSchema = new mongoose.Schema(
 	{
 		excluded: {
@@ -26,25 +129,25 @@ const ParkingSchema = new mongoose.Schema(
 				type: Date,
 				default: Date.now
 			},
-			cep: {
+			zip_code: {
 				type: String
 			},
 			state: {
 				lowercase: true,
 				type: String
 			},
-			cidade: {
+			city: {
 				lowercase: true,
 				type: String
 			},
-			bairro: {
+			neighborhood: {
 				type: String,
 				select: false
 			},
-			rua: {
+			street: {
 				type: String
 			},
-			numero: {
+			number_house: {
 				type: String
 			},
 			coordinates: {
@@ -54,133 +157,23 @@ const ParkingSchema = new mongoose.Schema(
 				longitude: {
 					type: Number
 				}
-			},
-			users: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'ParkingUser'
-				}
-			],
-			parkingSpace: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'ParkingSpace'
-				}
-			],
-			qualification: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'ParkingQualification'
-				}
-			]
-		}
-		// users: [
-		// 	{
-		// 		createdAt: {
-		// 			type: Date,
-		// 			default: Date.now
-		// 		},
-		// 		excluded: {
-		// 			type: Boolean,
-		// 			default: false
-		// 		},
-		// 		login: {
-		// 			lowercase: true,
-		// 			type: String
-		// 		},
-		// 		email: {
-		// 			lowercase: true,
-		// 			type: String
-		// 		},
-		// 		password: {
-		// 			type: String,
-		// 			select: false
-		// 		},
-		// 		birth: {
-		// 			type: Date
-		// 		},
-		// 		sex: {
-		// 			type: String
-		// 		},
-		// 		cpf: {
-		// 			type: String
-		// 		},
-		// 		name: {
-		// 			lowercase: true,
-		// 			type: String
-		// 		},
-		// 		accessLevel: {
-		// 			type: Intl
-		// 		}
-		// 	}
-		// ],
-		// parkingSpace: [
-		// 	{
-		// 		createdAt: {
-		// 			type: Date,
-		// 			default: Date.now
-		// 		},
-		// 		excluded: {
-		// 			type: Boolean,
-		// 			default: false
-		// 		},
-		// 		avalible: {
-		// 			type: Boolean,
-		// 			default: true
-		// 		},
-		// 		value: {
-		// 			type: Intl
-		// 		},
-		// 		name: {
-		// 			lowercase: true,
-		// 			type: String
-		// 		},
-		// 		accessLevel: {
-		// 			type: Intl
-		// 		},
-		// 		description: {
-		// 			accessibility: {
-		// 				type: Boolean
-		// 			},
-		// 			covered: {
-		// 				type: Boolean
-		// 			},
-		// 			vehicleType: {
-		// 				type: Boolean
-		// 			},
-		// 			services: {
-		// 				type: Boolean
-		// 			}
-		// 		}
-		// 	}
-		// ],
-		// qualification: [
-		// 	{
-		// 		createdAt: {
-		// 			type: Date,
-		// 			default: Date.now
-		// 		},
-		// 		value: {
-		// 			type: Intl
-		// 		},
-		// 		description: {
-		// 			lowercase: true,
-		// 			type: String
-		// 		},
-		// 		client: {
-		// 			login: {
-		// 				type: String
-		// 			},
-		// 			email: {
-		// 				type: String
-		// 			}
-		// 		}
-		// 	}
-		// ]
+			}
+		},
+		user: [ParkingUserSchema],
+		parkingSpace: [ParkingSpaceSchema],
+		qualification: [ParkingQualificationSchema]
 	},
 	{
 		timestamps: true
 	}
 );
+
+ParkingUserSchema.pre('save', async function(next) {
+	const hash = await bcrypt.hash(this.password, 1);
+
+	this.password = hash;
+
+	next();
+});
 
 module.exports = mongoose.model('Parking', ParkingSchema);
