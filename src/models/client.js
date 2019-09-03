@@ -3,6 +3,31 @@ const bcrypt = require('bcryptjs');
 
 mongoose.set('useCreateIndex', true);
 
+const VehicleSchema = new mongoose.Schema(
+	{
+		excluded: {
+			type: Boolean,
+			default: false
+		},
+		avalible: {
+			type: Boolean,
+			default: false,
+			require: true
+		},
+		plate: {
+			lowercase: true,
+			type: String
+		},
+		name: {
+			lowercase: true,
+			type: String
+		}
+	},
+	{
+		timestamps: true
+	}
+);
+
 const ClientSchema = new mongoose.Schema(
 	{
 		excluded: {
@@ -38,31 +63,7 @@ const ClientSchema = new mongoose.Schema(
 			ddd: Intl,
 			number: String
 		},
-		vehicle: [
-			{
-				createdAt: {
-					type: Date,
-					default: Date.now
-				},
-				excluded: {
-					type: Boolean,
-					default: false
-				},
-				avalible: {
-					type: Boolean,
-					default: false,
-					require: true
-				},
-				plate: {
-					lowercase: true,
-					type: String
-				},
-				name: {
-					lowercase: true,
-					type: String
-				}
-			}
-		]
+		vehicle: [VehicleSchema]
 	},
 	{
 		timestamps: true
