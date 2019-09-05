@@ -3,6 +3,24 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 module.exports = {
+	///////////////////////////////////////////////  creates
+
+	async CreateClient(req, res) {
+		try {
+			const response = await Client.create(req.body);
+
+			return res.json({
+				message: response
+			});
+		} catch (error) {
+			return res.status(400).json({
+				error: error.errmsg
+			});
+		}
+	},
+
+	///////////////////////////////////////////////  selects
+
 	async AuthenticateClient(req, res) {
 		const { login, password } = req.body;
 
@@ -25,13 +43,9 @@ module.exports = {
 		}
 	},
 
-	async CreateClient(req, res) {
-		const response = await Client.create(req.body);
+	///////////////////////////////////////////////  updates
 
-		return res.json({
-			message: response
-		});
-	},
+	///////////////////////////////////////////////  removes
 
 	async RemoveClient(req, res) {
 		const { name } = req.body;

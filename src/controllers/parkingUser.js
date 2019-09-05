@@ -2,6 +2,8 @@ const ParkingUser = require('../models/parkingUser');
 const bcrypt = require('bcryptjs');
 
 module.exports = {
+	///////////////////////////////////////////////  creates
+
 	async CreateParkingUser(req, res) {
 		try {
 			const parkingUser = await ParkingUser.create(req.body);

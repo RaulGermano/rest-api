@@ -6,11 +6,13 @@ const {
 	AuthenticateClient
 } = require('../controllers/client');
 
+const { CreateParking, SelectParking } = require('../controllers/parking');
+
+const { CreateParkingSpace } = require('../controllers/parkingSpace');
+
 const {
-	CreateParking,
-	CreateParkingSpace,
-	SelectParking
-} = require('../controllers/parking');
+	CreateParkingQualification
+} = require('../controllers/parkingQualification');
 
 const {
 	CreateParkingUser,
@@ -33,12 +35,18 @@ routes.post('/select-parkings', SelectParking);
 
 routes.post('/create-parking', CreateParking);
 
-routes.post('/create-parking-space', CreateParkingSpace);
-
 //////////////////////// parking user
 
 routes.post('/auth-parking', AuthenticateParking);
 
 routes.post('/create-parking-user', CreateParkingUser);
+
+//////////////////////// parking space
+
+routes.post('/create-parking-space', CreateParkingSpace);
+
+//////////////////////// parking qualification
+
+routes.post('/create-parking-qualification', CreateParkingQualification);
 
 module.exports = routes;

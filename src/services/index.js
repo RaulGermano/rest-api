@@ -7,7 +7,7 @@ const server = express();
 
 mongoose.connect(
 	// 'mongodb+srv://appproparking:appproparking@cluster0-5rwc5.mongodb.net/PROParking?retryWrites=true&w=majority',
-	'mongodb://localhost:27017/PROParking',
+	'mongodb://localhost:27017/PROParkings',
 	{ useNewUrlParser: true }
 );
 

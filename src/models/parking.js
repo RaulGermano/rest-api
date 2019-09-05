@@ -13,6 +13,10 @@ const ParkingQualificationSchema = new mongoose.Schema(
 			type: String
 		},
 		client: {
+			_id: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Parking'
+			},
 			login: {
 				lowercase: true,
 				type: String
@@ -62,47 +66,6 @@ const ParkingSpaceSchema = new mongoose.Schema(
 				type: Boolean,
 				default: false
 			}
-		}
-	},
-	{
-		timestamps: true
-	}
-);
-
-const ParkingUserSchema = new mongoose.Schema(
-	{
-		excluded: {
-			type: Boolean,
-			default: false
-		},
-		login: {
-			unique: true,
-			lowercase: true,
-			type: String
-		},
-		email: {
-			lowercase: true,
-			type: String
-		},
-		password: {
-			type: String
-		},
-		birth: {
-			type: Date
-		},
-		sex: {
-			lowercase: true,
-			type: String
-		},
-		cpf: {
-			type: String
-		},
-		name: {
-			lowercase: true,
-			type: String
-		},
-		accessLevel: {
-			type: Intl
 		}
 	},
 	{
@@ -162,7 +125,6 @@ const ParkingSchema = new mongoose.Schema(
 				}
 			}
 		},
-		user: [ParkingUserSchema],
 		parkingSpace: [ParkingSpaceSchema],
 		qualification: [ParkingQualificationSchema]
 	},
@@ -170,13 +132,5 @@ const ParkingSchema = new mongoose.Schema(
 		timestamps: true
 	}
 );
-
-ParkingUserSchema.pre('save', async function(next) {
-	const hash = await bcrypt.hash(this.password, 1);
-
-	this.password = hash;
-
-	next();
-});
 
 module.exports = mongoose.model('Parking', ParkingSchema);

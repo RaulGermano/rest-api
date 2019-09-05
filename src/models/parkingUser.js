@@ -41,7 +41,8 @@ const ParkingUserSchema = new mongoose.Schema(
 			type: Intl
 		},
 		parking_id: {
-			type: mongoose.Schema.Types.ObjectId
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Parking'
 		}
 	},
 	{

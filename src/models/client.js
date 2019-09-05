@@ -15,6 +15,9 @@ const VehicleSchema = new mongoose.Schema(
 			require: true
 		},
 		plate: {
+			index: {
+				unique: true
+			},
 			lowercase: true,
 			type: String
 		},
@@ -35,6 +38,9 @@ const ClientSchema = new mongoose.Schema(
 			default: false
 		},
 		login: {
+			index: {
+				unique: true
+			},
 			lowercase: true,
 			type: String
 		},
