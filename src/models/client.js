@@ -11,13 +11,14 @@ const VehicleSchema = new mongoose.Schema(
 		},
 		avalible: {
 			type: Boolean,
-			default: false,
+			default: true,
 			require: true
 		},
 		plate: {
 			index: {
 				unique: true
 			},
+			require: true,
 			lowercase: true,
 			type: String
 		},
