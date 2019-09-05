@@ -43,8 +43,7 @@ const ClientSchema = new mongoose.Schema(
 			type: String
 		},
 		password: {
-			type: String,
-			select: false
+			type: String
 		},
 		name: {
 			lowercase: true,

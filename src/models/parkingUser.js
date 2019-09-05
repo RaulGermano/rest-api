@@ -10,6 +10,9 @@ const ParkingUserSchema = new mongoose.Schema(
 			default: false
 		},
 		login: {
+			index: {
+				unique: true
+			},
 			lowercase: true,
 			type: String
 		},
@@ -18,13 +21,13 @@ const ParkingUserSchema = new mongoose.Schema(
 			type: String
 		},
 		password: {
-			type: String,
-			select: false
+			type: String
 		},
 		birth: {
 			type: Date
 		},
 		sex: {
+			lowercase: true,
 			type: String
 		},
 		cpf: {
@@ -36,11 +39,22 @@ const ParkingUserSchema = new mongoose.Schema(
 		},
 		accessLevel: {
 			type: Intl
+		},
+		parking_id: {
+			type: mongoose.Schema.Types.ObjectId
 		}
 	},
 	{
 		timestamps: true
 	}
 );
+
+ParkingUserSchema.pre('save', async function(next) {
+	const hash = await bcrypt.hash(this.password, 1);
+
+	this.password = hash;
+
+	next();
+});
 
 module.exports = mongoose.model('ParkingUser', ParkingUserSchema);

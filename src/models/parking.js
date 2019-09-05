@@ -47,16 +47,20 @@ const ParkingSpaceSchema = new mongoose.Schema(
 		},
 		description: {
 			accessibility: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
 			covered: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
 			vehicle_type: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			},
 			services: {
-				type: Boolean
+				type: Boolean,
+				default: false
 			}
 		}
 	},
@@ -72,6 +76,7 @@ const ParkingUserSchema = new mongoose.Schema(
 			default: false
 		},
 		login: {
+			unique: true,
 			lowercase: true,
 			type: String
 		},
@@ -80,8 +85,7 @@ const ParkingUserSchema = new mongoose.Schema(
 			type: String
 		},
 		password: {
-			type: String,
-			select: false
+			type: String
 		},
 		birth: {
 			type: Date
@@ -141,8 +145,7 @@ const ParkingSchema = new mongoose.Schema(
 				type: String
 			},
 			neighborhood: {
-				type: String,
-				select: false
+				type: String
 			},
 			street: {
 				type: String

@@ -9,7 +9,7 @@ module.exports = {
 		try {
 			const user = await Client.findOne({
 				login
-			}).select('+password');
+			});
 
 			if (!user) {
 				return res.status(400).send('Usuário não encontrado!');
@@ -18,8 +18,6 @@ module.exports = {
 			if (!(await bcrypt.compare(password, user.password))) {
 				return res.status(400).send('Senha incorreta!');
 			}
-
-			user.password = undefined;
 
 			return res.json(user);
 		} catch (error) {
