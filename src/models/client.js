@@ -15,9 +15,6 @@ const VehicleSchema = new mongoose.Schema(
 			require: true
 		},
 		plate: {
-			index: {
-				unique: true
-			},
 			require: true,
 			lowercase: true,
 			type: String
